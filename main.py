@@ -8,8 +8,19 @@ class ESMSApp(tk.Tk):
         super().__init__()
         self.title("ESMS")
         
-        # Simulated Mobile View
-        self.geometry("400x750")
+        # Adaptive Mobile View
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        
+        # Standard mobile simulation size (400x750)
+        width = min(400, screen_width)
+        height = min(750, screen_height)
+        
+        # Center if there's extra space
+        x = (screen_width - width) // 2
+        y = (screen_height - height) // 2
+        
+        self.geometry(f"{width}x{height}+{x}+{y}")
         self.resizable(False, False)
         
         # Colors & Constants
@@ -65,9 +76,14 @@ class ESMSApp(tk.Tk):
         self.container = tk.Frame(self, bg=self.BG_COLOR)
         self.container.pack(fill="both", expand=True)
         
-        # Initialize Database
-        database.init_db()
-        
+        # Initialize Database with Error Handling
+        try:
+            database.init_db()
+        except Exception as e:
+            messagebox.showerror("Fatal Error", f"Database failed to initialize:\n{e}\n\nPlease ensure the app has file permissions.")
+            self.destroy()
+            return
+
         self.show_frame("LoginFrame")
 
     def show_frame(self, page_name, **kwargs):
