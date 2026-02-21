@@ -50,3 +50,4 @@ To run this system on your mobile device using Pydroid 3:
 - `main.py`: The primary GUI application using Tkinter.
 - `database.py`: Handles all SQLite database interactions.
 - `employees.db`: The local database file (generated automatically).
+
